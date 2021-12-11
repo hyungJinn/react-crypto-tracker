@@ -13,11 +13,11 @@ interface IHistorical {
   market_cap: number;
 }
 
-interface ChartProps {
+interface PriceProps {
   coinId: string;
 }
 
-function Chart({ coinId }: ChartProps) {
+function Chart({ coinId }: PriceProps) {
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -28,7 +28,7 @@ function Chart({ coinId }: ChartProps) {
   return (
     <div>
       {isLoading ? (
-        "Loading chart..."
+        "Loading price..."
       ) : (
         <ApexChart
           type="line"
