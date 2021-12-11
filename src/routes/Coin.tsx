@@ -62,14 +62,14 @@ const Description = styled.p`
   margin: 20px 0px;
 `;
 
-const Tabs = styled.div`
+const Tabs = styled.div<{ repeatNum: number }>`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: ${(props) => `repeat(${props.repeatNum}, 1fr)`};
   margin: 25px 0px;
   gap: 10px;
 `;
 
-const Tab = styled.span<{ isActive: boolean }>`
+const Tab = styled.span<{ isActive?: boolean }>`
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
@@ -88,7 +88,7 @@ interface RouteParams {
   coinId: string;
 }
 
-interface RouteStaet {
+interface RouteState {
   name: string;
 }
 
@@ -151,7 +151,7 @@ interface PriceData {
 
 function Coin() {
   const { coinId } = useParams<RouteParams>();
-  const { state } = useLocation<RouteStaet>();
+  const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
@@ -195,6 +195,11 @@ function Coin() {
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
       </Header>
+      <Tabs repeatNum={1}>
+        <Tab>
+          <Link to={`/`}>Back</Link>
+        </Tab>
+      </Tabs>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
@@ -225,7 +230,7 @@ function Coin() {
             </OverviewItem>
           </Overview>
 
-          <Tabs>
+          <Tabs repeatNum={2}>
             <Tab isActive={chartMatch !== null}>
               <Link to={`/${coinId}/chart`}>Chart</Link>
             </Tab>
@@ -236,7 +241,7 @@ function Coin() {
 
           <Switch>
             <Route path={`/${coinId}/price`}>
-              <Price />
+              <Price coinId={coinId} />
             </Route>
             <Route path={`/${coinId}/chart`}>
               <Chart coinId={coinId} />
