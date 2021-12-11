@@ -64,7 +64,7 @@ const Description = styled.p`
 
 const Tabs = styled.div<{ repeatNum: number }>`
   display: grid;
-  grid-template-columns: ${(props) => `repeat(${props.repeatNum}, 1fr)`};
+  grid-template-columns: repeat(${(props) => props.repeatNum}, 1fr);
   margin: 25px 0px;
   gap: 10px;
 `;
@@ -88,7 +88,7 @@ interface RouteParams {
   coinId: string;
 }
 
-interface RouteState {
+interface RouteStaet {
   name: string;
 }
 
@@ -151,7 +151,7 @@ interface PriceData {
 
 function Coin() {
   const { coinId } = useParams<RouteParams>();
-  const { state } = useLocation<RouteState>();
+  const { state } = useLocation<RouteStaet>();
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
