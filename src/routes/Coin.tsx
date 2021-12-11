@@ -158,8 +158,8 @@ function Coin() {
     () => fetchCoinInfo(coinId)
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
-    ["info", coinId],
-    () => fetchCoinTickers(coinId)
+    ["tickers", coinId],
+    () => fetchCoinTickers(coinId) //시간이 지나면 react query는 이 함수를 가져다가 이걸 다시 호출한다.
   );
   const loading = infoLoading || tickersLoading;
   // const [loading, setLoading] = useState(true);
