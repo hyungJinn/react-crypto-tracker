@@ -31,40 +31,54 @@ function Chart({ coinId }: PriceProps) {
         "Loading price..."
       ) : (
         <ApexChart
-          type="line"
-          series={[{ name: "sales", data: data?.map((price) => price.close) }]}
+          type="candlestick"
+          series={[
+            {
+              data: data?.map((price) => [
+                new Date(price.time_close).getTime(),
+                [
+                  price.open.toFixed(2),
+                  price.high.toFixed(2),
+                  price.low.toFixed(2),
+                  price.close.toFixed(2),
+                ],
+              ]),
+            },
+          ]}
           options={{
+            plotOptions: {
+              candlestick: {
+                colors: {
+                  upward: "#e84118",
+                  downward: "#00a8ff",
+                },
+                wick: {
+                  useFillColor: true,
+                },
+              },
+            },
             theme: { mode: "dark" },
             chart: {
+              // type: "candlestick",
               height: 500,
               width: 500,
               toolbar: { show: false },
               background: "transparent",
             },
-            grid: { show: false },
-            stroke: {
-              show: true,
-              curve: "smooth",
-              lineCap: "butt",
-              colors: undefined,
-              width: 2,
-              dashArray: 0,
-            },
+            // grid: { show: false },
             yaxis: {
-              show: false,
+              show: true,
+              tooltip: {
+                enabled: true,
+              },
             },
             xaxis: {
-              axisBorder: { show: false },
-              axisTicks: { show: false },
-              labels: { show: false },
+              // axisBorder: { show: false },
+              // axisTicks: { show: false },
+              // labels: { show: false },
               type: "datetime",
-              categories: data?.map((price) => price.time_close),
+              // categories: data?.map((price) => price.time_close),
             },
-            fill: {
-              type: "gradient",
-              gradient: { gradientToColors: ["#00a8ff"], stops: [0, 100] },
-            },
-            colors: ["#e84118"],
             tooltip: {
               y: { formatter: (value) => `${value.toFixed(2)}` },
             },
