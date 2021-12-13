@@ -13,11 +13,12 @@ interface IHistorical {
   market_cap: number;
 }
 
-interface PriceProps {
+interface ChartProps {
   coinId: string;
+  isDark: boolean;
 }
 
-function Chart({ coinId }: PriceProps) {
+function Chart({ coinId, isDark }: ChartProps) {
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -57,7 +58,7 @@ function Chart({ coinId }: PriceProps) {
                 },
               },
             },
-            theme: { mode: "dark" },
+            theme: { mode: isDark ? "dark" : "light" },
             chart: {
               // type: "candlestick",
               height: 500,
